@@ -8,7 +8,10 @@ fastcd() {
     local maxdepth=$2
     local target=$3
 
-    local destination=$(find "$directory" -name "$target" -type d -print -quit)
+    local destination=$(
+        find "$directory" -maxdepth $maxdepth -name "$target" \
+            -type d -print -quit
+    )
 
     cd $destination
 }
