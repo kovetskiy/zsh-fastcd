@@ -1,8 +1,3 @@
-fpath=("$(dirname $0)" $fpath)
-
-autoload -U compinit
-compinit
-
 fastcd() {
     local directory=$1
     local maxdepth=$2
