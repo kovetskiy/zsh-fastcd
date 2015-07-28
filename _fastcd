@@ -12,7 +12,8 @@ function _fastcd() {
     fi
 
     for file in `
-        find . -maxdepth $maxdepth -type d -not -iwholename '*.git*' -print0 \
+        find . -maxdepth $maxdepth \( -type d -o -type l \) -not \
+                -iwholename '*.git*' -print0 \
             | xargs -0 -n1 basename | sort | uniq -u
         `; do
         compadd $file
