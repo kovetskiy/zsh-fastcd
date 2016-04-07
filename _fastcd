@@ -1,25 +1,21 @@
 #compdef fastcd
 
 function _fastcd() {
-    # directory may be '$GOPATH/src', so need expand
-    local directory=$(eval echo `echo $words[2]`)
-
     local maxdepth=$words[3]
+    local directory=$words[2]
+    local src=$(eval echo "$directory")
 
-    cd $directory
-    if [ $? -ne 0 ]; then
-        return 1
-    fi
+    local dirs=($(
+        find $src -maxdepth $maxdepth \( -type d -o -type l \) \
+            -not  \( \
+                -iwholename '*.git*' -o \
+                -iwholename '*.svn*' -o \
+                -iwholename '*.hg*' \) \
+            -printf '%f\n' \
+        | sort | uniq -u
+    ))
 
-    for file in `
-        find . -maxdepth $maxdepth \( -type d -o -type l \) -not \
-                -iwholename '*.git*' -print0 \
-            | xargs -0 -n1 basename | sort | uniq -u
-        `; do
-        compadd $file
-    done
-
-    cd $OLDPWD
+    _values "fastcd at: $directory" $dirs
 }
 
 _fastcd "${@}"
