@@ -11,7 +11,7 @@ function _fastcd() {
                 -iwholename '*.git*' -o \
                 -iwholename '*.svn*' -o \
                 -iwholename '*.hg*' \) \
-            -printf '%f\n' \
+            -print | xargs -n 1 basename \
         | sort | uniq -u
     ))
 
